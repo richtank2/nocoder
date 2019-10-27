@@ -1,0 +1,33 @@
+/*Originally from internetgeeks.org*/
+
+function onEdit(event)
+{ 
+  var timezone = "GMT+1";
+  var timestamp_format = "MM-dd-yyyy hh:mm:ss"; // Timestamp Format.  
+  var updateColName = "first_entry";
+  var updateColName1 = "last_entry";
+  var timeStampColName = "entry_time";
+  var timeStampColName1 = "last_entry_time";
+  var sheet = event.source.getSheetByName('Sheet1'); //Name of the sheet where you want to run this script.
+  var actRng = event.source.getActiveRange();
+  var editColumn = actRng.getColumn();
+  var index = actRng.getRowIndex();
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues();
+  var dateCol = headers[0].indexOf(timeStampColName);
+  var updateCol = headers[0].indexOf(updateColName); updateCol = updateCol+1;
+  if (dateCol > -1 && index > 1 && editColumn == updateCol) { // only timestamp if 'Last Updated' header exists, but not in the header row itself!
+    var cell = sheet.getRange(index, dateCol + 1);
+    var date = Utilities.formatDate(new Date(), timezone, timestamp_format);
+    cell.setValue(date);
+  } 
+  //add code to update time/date stamp if the additionally defined columns have changes
+var dateCol = headers[0].indexOf(timeStampColName1);
+var updateCol = headers[0].indexOf(updateColName1); updateCol = updateCol+1;
+if (dateCol > -1 && index > 1 && editColumn ==
+updateCol) { // only timestamp if ‘Last Updated’ header exists, but not in the header row itself!
+var cell = sheet.getRange(index, dateCol + 1);
+var date = Utilities.formatDate(new Date(), timezone, timestamp_format);
+cell.setValue(date);
+}
+}
+
